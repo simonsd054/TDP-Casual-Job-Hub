@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+}
+
+@mixin button {
+    font-size: 20px;
+    background-color: #d9d9d9;
+    outline: none;
+    border: none;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.form {
+    width: 100%;
+    background-color: #ffe1e1;
+    padding: 20px 0px;
+
+    .form-items {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        margin-bottom: 20px;
+
+        width: 90%;
+
+        .label {
+            font-size: 20px;
+        }
+        .input {
+            min-height: 38px;
+            outline: none;
+            font-size: 20px;
+            border: none;
+            background-color: #d9d9d9;
+            border-radius: 4px;
+
+            &.description {
+                resize: vertical;
+            }
+        }
+        .payment-input {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+
+            .input {
+                min-width: 0;
+            }
+        }
+    }
+
+    .form-upload {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+
+        .upload-button {
+            @include button;
+            width: 90%;
+        }
+    }
+
+    .form-buttons {
+        display: flex;
+        justify-content: space-around;
+        .buttons-button {
+            @include button;
+        }
+    }
+}
