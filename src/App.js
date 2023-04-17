@@ -13,7 +13,7 @@ const router = createBrowserRouter([
         element: <MainPage />,
         children: [
             {
-                path: "/save-job",
+                path: "/",
                 element: <SaveJob />,
             },
             {

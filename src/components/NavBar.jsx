@@ -28,7 +28,7 @@ export default function NavBar() {
 
     const links = [
         {
-            to: "/save-job",
+            to: "/",
             text: "Save a New Job",
         },
         {
