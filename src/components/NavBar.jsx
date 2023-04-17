@@ -52,7 +52,6 @@ export default function NavBar() {
                     onClick={toggleDrawer(true)}
                     sx={{
                         mr: 2,
-                        display: { xs: "block", sm: "none" },
                         color: "black",
                     }}
                 >

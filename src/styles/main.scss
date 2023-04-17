@@ -68,3 +68,74 @@ body {
         }
     }
 }
+
+#job-title-select {
+    background-color: #d9d9d9;
+    border: none;
+}
+
+.job-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+
+    .no-job {
+        text-align: center;
+        font-size: 28px;
+    }
+
+    .job-item {
+        width: 100%;
+        box-sizing: border-box;
+        background-color: #d9d9d9;
+        padding: 10px;
+
+        display: grid;
+        grid-template-columns: 1fr minmax(0, 2fr) 1fr;
+        gap: 10px;
+
+        .job-box {
+            background-color: #ff7272;
+            padding: 5px;
+        }
+
+        .job-image {
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .job-info {
+            color: white;
+
+            .title {
+                font-size: 24px;
+                font-weight: bold;
+            }
+
+            .location {
+            }
+
+            .description {
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .job-payment {
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .payment {
+                font-size: 24px;
+            }
+        }
+    }
+}

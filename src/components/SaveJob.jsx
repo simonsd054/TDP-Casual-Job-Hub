@@ -1,7 +1,17 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material"
+import {
+    Button,
+    ClickAwayListener,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    Tooltip,
+} from "@mui/material"
+import InfoIcon from "@mui/icons-material/Info"
 
 import { useGlobalContext } from "../reducers/globalStateContext"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function SaveJob() {
     const pays = [
@@ -16,7 +26,25 @@ export default function SaveJob() {
         },
     ]
 
-    const { store, dispatch } = useGlobalContext()
+    const jobs = [
+        {
+            id: 1,
+            title: "Wait Staff",
+            avgPay: 25,
+        },
+        {
+            id: 2,
+            title: "Kitchen Hand",
+            avgPay: 27,
+        },
+        {
+            id: 3,
+            title: "Night Filler",
+            avgPay: 32,
+        },
+    ]
+
+    const { dispatch } = useGlobalContext()
 
     const [jobInfo, setJobInfo] = useState({
         title: "",
@@ -24,11 +52,33 @@ export default function SaveJob() {
         payment: 0,
         description: "",
     })
-    const { title, location, payment, description } = jobInfo
+    const { storeTitle, location, payment, description } = jobInfo
     const [payPeriod, setPayPeriod] = useState(pays[0].title)
+    const [genericTitle, setGenericTitle] = useState("")
+    const [open, setOpen] = useState(false)
+    const navigate = useNavigate()
+
+    const handleTooltipClose = () => {
+        setOpen(false)
+    }
+
+    const handleTooltipOpen = () => {
+        setOpen(true)
+    }
 
     const handlePeriodChange = (e) => {
         setPayPeriod(e.target.value)
+    }
+
+    const handleGenericJobTitleChange = (e) => {
+        setGenericTitle(e.target.value)
+        const payment = jobs.find((job) => job.title === e.target.value).avgPay
+        setJobInfo((prevJobInfo) => {
+            return {
+                ...prevJobInfo,
+                payment,
+            }
+        })
     }
 
     const handleChange = (e) => {
@@ -40,10 +90,6 @@ export default function SaveJob() {
         })
     }
 
-    console.log("haha", jobInfo)
-
-    console.log("store", store)
-
     const saveJob = () => {
         dispatch({
             type: "addJob",
@@ -52,6 +98,7 @@ export default function SaveJob() {
                 period: payPeriod,
             },
         })
+        navigate("/jobs")
     }
 
     return (
@@ -74,11 +121,35 @@ export default function SaveJob() {
             </div>
             <div className="form">
                 <div className="form-items">
-                    <label className="label">Job Title</label>
+                    <label className="label">Generic Job Title</label>
+                    <FormControl fullWidth size="small">
+                        <Select
+                            sx={{
+                                boxShadow: "none",
+                                ".MuiOutlinedInput-notchedOutline": {
+                                    border: 0,
+                                },
+                            }}
+                            id="job-title-select"
+                            value={genericTitle}
+                            onChange={handleGenericJobTitleChange}
+                        >
+                            {jobs.map((job) => {
+                                return (
+                                    <MenuItem key={job.id} value={job.title}>
+                                        {job.title}
+                                    </MenuItem>
+                                )
+                            })}
+                        </Select>
+                    </FormControl>
+                </div>
+                <div className="form-items">
+                    <label className="label">Store Specific Job Title</label>
                     <input
                         className="input"
-                        name="title"
-                        value={title}
+                        name="storeTitle"
+                        value={storeTitle}
                         onChange={handleChange}
                     />
                 </div>
@@ -92,7 +163,35 @@ export default function SaveJob() {
                     />
                 </div>
                 <div className="form-items">
-                    <label className="label">Payment</label>
+                    <div
+                        style={{
+                            display: "flex",
+                        }}
+                    >
+                        <label className="label">Payment</label>
+                        <ClickAwayListener onClickAway={handleTooltipClose}>
+                            <div>
+                                <Tooltip
+                                    PopperProps={{
+                                        disablePortal: true,
+                                    }}
+                                    onClose={handleTooltipClose}
+                                    open={open}
+                                    disableFocusListener
+                                    disableHoverListener
+                                    disableTouchListener
+                                    title="The pay here is auto generated by our system
+                                according to the average pay for the specific job
+                                title. You can also change it if you wish."
+                                    arrow
+                                >
+                                    <Button sx={{padding: 0, minWidth: 0}} onClick={handleTooltipOpen}>
+                                        <InfoIcon />
+                                    </Button>
+                                </Tooltip>
+                            </div>
+                        </ClickAwayListener>
+                    </div>
                     <div className="payment-input">
                         <input
                             className="input"
@@ -100,13 +199,13 @@ export default function SaveJob() {
                             value={payment}
                             onChange={handleChange}
                         />
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
+                        <FormControl fullWidth size="small">
+                            <InputLabel id="payment-period-label">
                                 Period
                             </InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
+                                labelId="payment-period"
+                                id="payment-period-select"
                                 value={payPeriod}
                                 label="Period"
                                 onChange={handlePeriodChange}
